@@ -1,0 +1,31 @@
+name: Deploy Spring Boot Application
+
+on:
+  push:
+    branches:
+      - main  # Déclenche le workflow sur les push vers la branche main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '22'  # Spécifiez la version de Java que vous utilisez
+
+      - name: Build with Maven
+        run: mvn clean package  # Construisez votre application
+
+      - name: Deploy to Server
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        run: |
+          scp -o StrictHostKeyChecking=no target/nom-de-votre-application.jar $SERVER_USER@$SERVER_IP:/path/to/deploy/
+          ssh $SERVER_USER@$SERVER_IP "nohup java -jar /path/to/deploy/nom-de-votre-application.jar > /dev/null 2>&1 &"
