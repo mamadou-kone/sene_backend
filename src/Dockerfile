@@ -1,5 +1,5 @@
-# Utilise l'image de base OpenJDK 22 pour le build
-FROM openjdk:22-jdk-slim AS build
+# Utilise une image de base contenant OpenJDK 22 et Maven
+FROM maven:3.8.5-openjdk-22-slim AS build
 
 # Définit le répertoire de travail
 WORKDIR /app
