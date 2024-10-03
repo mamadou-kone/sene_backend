@@ -1,7 +1,6 @@
 package com.sene.backend.entity.personne;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +32,7 @@ public abstract class Utilisateur implements UserDetails {
     private String prenom;
     private String address;
     private String tel;
-    private LocalDate dateInscription;
+    private LocalDate dateInscription=LocalDate.now();
 
     @Column(nullable = false)
     private Boolean statutCompte = true;

@@ -72,6 +72,7 @@ public class JwtService {
         final Map<String, Object> claims = Map.of(
                 "nom", utilisateur.getNom(),
                 "userId", utilisateur.getId().toString(),  // Stocker l'ID utilisateur dans le token
+                "role", utilisateur.getRole() != null ? utilisateur.getRole().getNom() : "UNKNOWN", // Ajouter le rôle
                 Claims.EXPIRATION, new Date(expirationTime),
                 Claims.SUBJECT, utilisateur.getEmail()
         );
