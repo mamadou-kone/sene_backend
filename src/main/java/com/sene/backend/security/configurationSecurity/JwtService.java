@@ -9,8 +9,15 @@ import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -35,7 +42,6 @@ public class JwtService {
 
     public Long extractUserId(String token) {
         Claims claims = getAllClaims(token);
-        // Assurez-vous que l'ID utilisateur est bien stocké dans le token sous la clé "userId"
         return Long.parseLong(claims.get("userId", String.class));
     }
 
@@ -69,26 +75,64 @@ public class JwtService {
         final long currentTime = System.currentTimeMillis();
         final long expirationTime = currentTime + 30 * 60 * 1000; // 30 minutes
 
-        final Map<String, Object> claims = Map.of(
-                "nom", utilisateur.getNom(),
-                "userId", utilisateur.getId().toString(),  // Stocker l'ID utilisateur dans le token
-                "role", utilisateur.getRole() != null ? utilisateur.getRole().getNom() : "UNKNOWN", // Ajouter le rôle
-                Claims.EXPIRATION, new Date(expirationTime),
-                Claims.SUBJECT, utilisateur.getEmail()
-        );
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("nom", utilisateur.getNom() != null ? utilisateur.getNom() : "INCONNU");
+        claims.put("prenom", utilisateur.getPrenom() != null ? utilisateur.getPrenom() : "INCONNU");
+
+        // Encode l'image en Base64 si elle n'est pas null
+        String imageBase64 = null;
+        if (utilisateur.getImage() != null) {
+            BufferedImage image = bytesToBufferedImage(utilisateur.getImage());
+            imageBase64 = encodeImageToBase64(image);
+        }
+        claims.put("image", imageBase64);
+
+        claims.put("userId", utilisateur.getId() != null ? utilisateur.getId().toString() : "0");
+        claims.put("role", utilisateur.getRole() != null ? utilisateur.getRole().getNom() : "UNKNOWN");
+        claims.put(Claims.EXPIRATION, new Date(expirationTime));
+        claims.put(Claims.SUBJECT, utilisateur.getEmail() != null ? utilisateur.getEmail() : "INCONNU");
 
         final String bearer = Jwts.builder()
                 .setIssuedAt(new Date(currentTime))
                 .setExpiration(new Date(expirationTime))
-                .setSubject(utilisateur.getEmail())
+                .setSubject(utilisateur.getEmail() != null ? utilisateur.getEmail() : "INCONNU")
                 .setClaims(claims)
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
         return Map.of("bearer", bearer);
     }
 
+    private BufferedImage bytesToBufferedImage(byte[] imageBytes) {
+        try {
+            return ImageIO.read(new ByteArrayInputStream(imageBytes));
+        } catch (IOException e) {
+            throw new RuntimeException("Erreur lors de la conversion des bytes en BufferedImage", e);
+        }
+    }
+
+    private String encodeImageToBase64(BufferedImage image) {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            ImageIO.write(image, "png", baos); // Change "png" si nécessaire
+            byte[] imageBytes = baos.toByteArray();
+            return Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
+            throw new RuntimeException("Erreur lors de l'encodage de l'image", e);
+        }
+    }
+
     private Key getKey() {
         byte[] decoder = Decoders.BASE64.decode(ENCRYPTION_KEY);
         return Keys.hmacShaKeyFor(decoder);
+    }
+
+    public BufferedImage decodeImageFromToken(String token) throws IOException {
+        Claims claims = getAllClaims(token);
+        String base64Image = claims.get("image", String.class);
+
+        if (base64Image != null) {
+            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+            return ImageIO.read(new ByteArrayInputStream(imageBytes));
+        }
+        return null; // Ou gérer le cas où l'image est absente
     }
 }

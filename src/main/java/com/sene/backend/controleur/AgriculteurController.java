@@ -59,12 +59,28 @@ public class AgriculteurController {
 
     // Mise à jour d'un Agriculteur
     @PutMapping("/{id}")
-    public ResponseEntity<Agriculteur> miseAJour(@PathVariable Long id, @RequestBody Agriculteur agriculteur) {
-        Agriculteur updatedAgriculteur = agriculteurService.miseAJour(agriculteur, id);
-        if (updatedAgriculteur != null) {
-            return ResponseEntity.ok(updatedAgriculteur);
+    public ResponseEntity<Agriculteur> miseAJour(@PathVariable Long id,
+                                                 @RequestParam("agriculteur") String agriculteurJson,
+                                                 @RequestParam(value = "image", required = false) MultipartFile imageFile) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Agriculteur agriculteur = objectMapper.readValue(agriculteurJson, Agriculteur.class);
+
+            // Si une nouvelle image est fournie, la mettre à jour
+            if (imageFile != null && !imageFile.isEmpty()) {
+                agriculteur.setImage(imageFile.getBytes());
+            }
+
+            Agriculteur updatedAgriculteur = agriculteurService.miseAJour(agriculteur, id);
+            if (updatedAgriculteur != null) {
+                return ResponseEntity.ok(updatedAgriculteur);
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     // Suppression d'un Agriculteur par ID
