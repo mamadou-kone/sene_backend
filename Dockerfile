@@ -1,4 +1,6 @@
 FROM openjdk:22
+WORKDIR /sene
+
 ADD target/backend-0.0.1-SNAPSHOT.jar backend-0.0.1-SNAPSHOT.jar
 ENTRYPOINT["java","-jar","/backend-0.0.1-SNAPSHOT.jar"]
 
@@ -6,7 +8,7 @@ ENTRYPOINT["java","-jar","/backend-0.0.1-SNAPSHOT.jar"]
 VOLUME /tmp
 
 # Copier le fichier JAR dans le conteneur
-COPY target/*.jar app.jar
+COPY backend/target/backend-0.0.1-SNAPSHOT.jar /sene/backend.jar
 
 # Définir l'entrée du conteneur
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-jar", "/sene/backend.jar"]
