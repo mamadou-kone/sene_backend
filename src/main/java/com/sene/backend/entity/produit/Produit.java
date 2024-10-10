@@ -16,7 +16,7 @@ public class Produit {
     private String description;
     private Double prix;
     private Integer quantite;
-    private Boolean statut;
+    private Boolean statut =true;
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")

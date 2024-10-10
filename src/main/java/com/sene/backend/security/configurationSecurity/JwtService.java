@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.Key;
 import java.util.Base64;
@@ -80,12 +79,7 @@ public class JwtService {
         claims.put("prenom", utilisateur.getPrenom() != null ? utilisateur.getPrenom() : "INCONNU");
 
         // Encode l'image en Base64 si elle n'est pas null
-        String imageBase64 = null;
-        if (utilisateur.getImage() != null) {
-            BufferedImage image = bytesToBufferedImage(utilisateur.getImage());
-            imageBase64 = encodeImageToBase64(image);
-        }
-        claims.put("image", imageBase64);
+
 
         claims.put("userId", utilisateur.getId() != null ? utilisateur.getId().toString() : "0");
         claims.put("role", utilisateur.getRole() != null ? utilisateur.getRole().getNom() : "UNKNOWN");
@@ -110,15 +104,7 @@ public class JwtService {
         }
     }
 
-    private String encodeImageToBase64(BufferedImage image) {
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            ImageIO.write(image, "png", baos); // Change "png" si nécessaire
-            byte[] imageBytes = baos.toByteArray();
-            return Base64.getEncoder().encodeToString(imageBytes);
-        } catch (IOException e) {
-            throw new RuntimeException("Erreur lors de l'encodage de l'image", e);
-        }
-    }
+
 
     private Key getKey() {
         byte[] decoder = Decoders.BASE64.decode(ENCRYPTION_KEY);

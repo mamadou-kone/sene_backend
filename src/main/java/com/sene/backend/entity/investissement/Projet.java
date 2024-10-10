@@ -24,7 +24,7 @@ public class Projet {
     private String description;
     private Double montantNecessaire;
     private Double montantCollecte;
-    private Boolean statut;
+    private Boolean statut=true;
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")

@@ -32,33 +32,27 @@ public class ProjetController {
 
     // Ajouter un nouveau projet avec image
     @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<Projet> ajouterProjet(
+    public ResponseEntity<Projet> ajouterProduit(
             @RequestPart("projet") String projetJson,
-            @RequestPart(value = "image", required = false) MultipartFile image) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Projet projet = objectMapper.readValue(projetJson, Projet.class);
+            @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
 
-            // Récupérer l'ID de l'agriculteur connecté
-            Long id = currentUserService.getCurrentUtilisateurId();
-            Optional<Agriculteur> agriculteur = agriculteurService.trouverParId(id);
+        // Convertir le JSON en objet projet
+        ObjectMapper objectMapper = new ObjectMapper();
+        Projet projet = objectMapper.readValue(projetJson, Projet.class);
 
-            if (agriculteur.isPresent()) {
-                projet.setAgriculteur(agriculteur.get());
 
-                if (image != null && !image.isEmpty()) {
-                    projet.setImage(image.getBytes());
-                }
 
+            // Gérer l'image si elle est fournie
+            if (image != null && !image.isEmpty()) {
+                projet.setImage(image.getBytes());
+
+
+                // Sauvegarder le produit avec l'agriculteur associé
                 Projet nouveauProjet = projetService.ajout(projet);
+
                 return ResponseEntity.status(HttpStatus.CREATED).body(nouveauProjet);
-            } else {
-                return ResponseEntity.badRequest().build(); // Agriculteur non trouvé
-            }
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }else {
+            return ResponseEntity.badRequest().build(); // Gérer le cas où l'agriculteur n'est pas trouvé
         }
     }
 
