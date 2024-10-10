@@ -16,6 +16,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
+          distribution: 'temurin'  # Spécifiez la distribution Java (ex: 'temurin', 'zulu', etc.)
           java-version: '22'  # Spécifiez la version de Java que vous utilisez
 
       - name: Build with Maven
