@@ -3,6 +3,8 @@ COPY . .
 WORKDIR /sene
 RUN mvn clean package -DskipTests
 
+FROM openjdk:22-jdk-slim
+
 # Copier le fichier JAR dans le conteneur
 COPY --from=build /sene/target/backend-0.0.1-SNAPSHOT.jar /sene/backend.jar
 
