@@ -7,9 +7,7 @@ import com.sene.backend.repository.RoleRepository;
 import com.sene.backend.security.configurationSecurity.ConfigurationCryptageMotDePasse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,15 +24,12 @@ public class AgriculteurService {
     private ConfigurationCryptageMotDePasse configurationCryptageMotDePasse;
 
     // Ajouter un nouvel Agriculteur
-    public Agriculteur ajout(Agriculteur agriculteur, MultipartFile imageFile) {
-        // Validation
-        if (agriculteur.getNom() == null || agriculteur.getNom().isEmpty()) {
-            throw new IllegalArgumentException("Le nom est requis");
-        }
-
-        // Récupérer ou créer le rôle "Agriculteur"
+    public Agriculteur ajout(Agriculteur agriculteur) {
+        // Récupérer le rôle "Agriculteur"
         Role roleAgriculteur = roleRepository.findByNom("Agriculteur");
+
         if (roleAgriculteur == null) {
+            // Si le rôle n'existe pas, le créer
             roleAgriculteur = new Role();
             roleAgriculteur.setNom("Agriculteur");
             roleRepository.save(roleAgriculteur);
@@ -43,19 +38,8 @@ public class AgriculteurService {
         // Assigner le rôle à l'agriculteur
         agriculteur.setRole(roleAgriculteur);
         agriculteur.setPassword(configurationCryptageMotDePasse.passwordEncoder().encode(agriculteur.getPassword()));
-
-        // Gérer l'image
-        if (imageFile != null && !imageFile.isEmpty()) {
-            try {
-                agriculteur.setImage(imageFile.getBytes());
-            } catch (IOException e) {
-                throw new RuntimeException("Erreur lors de la lecture du fichier image", e);
-            }
-        }
-
         return agriculteurRepository.save(agriculteur);
     }
-
 
     // Lister tous les Agriculteurs
     public List<Agriculteur> liste() {

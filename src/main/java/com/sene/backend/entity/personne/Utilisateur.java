@@ -27,26 +27,28 @@ public abstract class Utilisateur implements UserDetails {
     private String email;
 
     private String nom;
+
     private String prenom;
+
     private String address;
+
     private String tel;
+
     private LocalDate dateInscription = LocalDate.now();
 
     @Column(nullable = false)
     private Boolean statutCompte = true;
 
     @Column(nullable = false)
-    private String password;  // Assurez-vous de hasher le mot de passe avant de le sauvegarder
+    private String password; // Assurez-vous de hasher le mot de passe avant de le sauvegarder
 
-    @Lob
-    @Column(columnDefinition = "BYTEA")  // Changement ici pour PostgreSQL
+
+    @Column(columnDefinition = "BYTEA") // Pour le stockage d'images dans PostgreSQL
     private byte[] image;
 
-    // Gestion des rôles avec une relation ManyToOne
     @ManyToOne
-    private Role role;
+    private Role role; // Relation vers le rôle de l'utilisateur
 
-    // Implémentations de UserDetails pour Spring Security
     @Override
     public String getUsername() {
         return email;
