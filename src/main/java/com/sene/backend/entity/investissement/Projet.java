@@ -26,7 +26,7 @@ public class Projet {
     private Double montantCollecte;
     private Boolean statut = true;
 
-    @Lob
+
     @Column(columnDefinition = "BYTEA")  // Utilisation de BYTEA pour PostgreSQL
     private byte[] image;  // Champ pour stocker l'image sous forme de bytes
 

@@ -18,7 +18,7 @@ public class Produit {
     private Integer quantite;
     private Boolean statut = true;
 
-    @Lob
+
     @Column(columnDefinition = "BYTEA")  // Utilisez BYTEA pour PostgreSQL
     private byte[] image;  // Champ pour stocker l'image sous forme de bytes
 
