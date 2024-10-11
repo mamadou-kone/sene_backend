@@ -30,30 +30,32 @@ public class AdminService {
     // Méthode pour initialiser l'admin par défaut
     @PostConstruct
     public void initAdmin() {
+        try {
+            if (adminRepository.count() == 0) {
+                Role roleAdmin = roleRepository.findByNom("Admin");
+                if (roleAdmin == null) {
+                    roleAdmin = new Role();
+                    roleAdmin.setNom("Admin");
+                    roleRepository.save(roleAdmin);
+                }
 
-        // Vérifier si un admin existe déjà
-        if (adminRepository.count() == 0) {
-            // Créer ou récupérer le rôle admin
-            Role roleAdmin = roleRepository.findByNom("Admin");
-            if (roleAdmin == null) {
-                roleAdmin = new Role();
-                roleAdmin.setNom("Admin");
-                roleRepository.save(roleAdmin);
+                Admin admin = new Admin();
+                admin.setEmail("admin@gmail.com");
+                admin.setNom("Admin");
+                admin.setPrenom("Admin");
+                admin.setTel("inconnu");
+                admin.setAddress("inconnu");
+                admin.setImage(null);
+                admin.setPassword(passwordEncoder.passwordEncoder().encode("1234"));
+                admin.setRole(roleAdmin);
+                adminRepository.save(admin);
             }
-
-            // Créer un nouvel admin
-            Admin admin = new Admin();
-            admin.setEmail("admin@gmail.com");
-            admin.setNom("Admin");
-            admin.setPrenom("Admin");
-            admin.setTel("iconnu");
-            admin.setAddress("iconnu");
-            admin.setImage(new byte[0]);
-            admin.setPassword(passwordEncoder.passwordEncoder().encode("1234")); // Assurez-vous de hasher ce mot de passe
-            admin.setRole(roleAdmin);
-            adminRepository.save(admin); // Sauvegarder l'admin
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'initialisation de l'admin : " + e.getMessage());
+            e.printStackTrace(); // Pour voir la stack trace complète
         }
     }
+
 
     // Ajouter un nouvel Admin
     public Admin ajout(Admin admin) {
