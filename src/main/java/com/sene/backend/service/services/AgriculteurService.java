@@ -13,7 +13,6 @@ import java.util.Optional;
 
 @Service
 public class AgriculteurService {
-    ConfigurationCryptageMotDePasse passwordEncoder = new ConfigurationCryptageMotDePasse();
 
     @Autowired
     private AgriculteurRepository agriculteurRepository;
@@ -21,12 +20,13 @@ public class AgriculteurService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private ConfigurationCryptageMotDePasse configurationCryptageMotDePasse;
 
     // Ajouter un nouvel Agriculteur
     public Agriculteur ajout(Agriculteur agriculteur) {
         // Récupérer le rôle "Agriculteur"
         Role roleAgriculteur = roleRepository.findByNom("Agriculteur");
-        agriculteur.setPassword(passwordEncoder.passwordEncoder().encode(agriculteur.getPassword()));
 
         if (roleAgriculteur == null) {
             // Si le rôle n'existe pas, le créer
@@ -37,6 +37,7 @@ public class AgriculteurService {
 
         // Assigner le rôle à l'agriculteur
         agriculteur.setRole(roleAgriculteur);
+        agriculteur.setPassword(configurationCryptageMotDePasse.passwordEncoder().encode(agriculteur.getPassword()));
         return agriculteurRepository.save(agriculteur);
     }
 

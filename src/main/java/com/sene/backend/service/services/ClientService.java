@@ -15,13 +15,13 @@ import java.util.Optional;
 public class ClientService {
 
     @Autowired
-    private ConfigurationCryptageMotDePasse configurationCryptageMotDePasse;
-
-    @Autowired
     private ClientRepository clientRepository;
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private ConfigurationCryptageMotDePasse configurationCryptageMotDePasse;
 
     // Ajouter un nouveau Client
     public Client ajout(Client client) {
@@ -38,8 +38,6 @@ public class ClientService {
         // Assigner le rôle au client
         client.setRole(roleClient);
         client.setPassword(configurationCryptageMotDePasse.passwordEncoder().encode(client.getPassword()));
-
-        // Sauvegarder le client avec le rôle attribué
         return clientRepository.save(client);
     }
 

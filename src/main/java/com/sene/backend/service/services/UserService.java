@@ -1,6 +1,5 @@
 package com.sene.backend.service.services;
 
-import com.sene.backend.entity.personne.Admin;
 import com.sene.backend.entity.personne.Utilisateur;
 import com.sene.backend.repository.UtilisateurRepository;
 import com.sene.backend.service.ActiveDesactiveService;

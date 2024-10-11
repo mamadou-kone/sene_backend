@@ -14,10 +14,8 @@ import java.util.Optional;
 @Service
 public class InvestissementService implements CrudService<Investissement, Long> {
 
-    @Autowired
     private InvestissementRepository investissementRepository;
 
-    @Autowired
     private ProjetRepository projetRepository; // Déclaration du ProjetRepository
 
     @Override

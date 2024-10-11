@@ -1,6 +1,5 @@
 package com.sene.backend.service.services;
 
-import com.sene.backend.entity.investissement.Projet;
 import com.sene.backend.entity.produit.Produit;
 import com.sene.backend.repository.ProduitRepository;
 import com.sene.backend.service.ActiveDesactiveService;

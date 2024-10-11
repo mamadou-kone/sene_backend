@@ -21,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
     private final JwtService jwtService;
 
-    @PostMapping(path = "connexion")
+    @PostMapping(path = "/connexion")
     public Map<String, String> connexion(@RequestBody AuthentificationDTO authentificationDTO) {
         // Log la tentative de connexion
         System.out.println("Tentative de connexion pour l'utilisateur : " + authentificationDTO.username());

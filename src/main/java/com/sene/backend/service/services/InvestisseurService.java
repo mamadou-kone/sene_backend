@@ -19,8 +19,9 @@ public class InvestisseurService {
 
     @Autowired
     private RoleRepository roleRepository;
+
     @Autowired
-     ConfigurationCryptageMotDePasse configurationCryptageMotDePasse;
+    private ConfigurationCryptageMotDePasse configurationCryptageMotDePasse;
 
     // Ajouter un nouvel Investisseur
     public Investisseur ajout(Investisseur investisseur) {

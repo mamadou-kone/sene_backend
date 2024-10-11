@@ -3,6 +3,7 @@ package com.sene.backend.security.configurationSecurity;
 import com.sene.backend.entity.personne.Utilisateur;
 import com.sene.backend.repository.UtilisateurRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,8 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UtilisateurService implements UserDetailsService {
 
-    private final UtilisateurRepository utilisateurRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public Utilisateur loadUserByUsername(String email) throws UsernameNotFoundException {

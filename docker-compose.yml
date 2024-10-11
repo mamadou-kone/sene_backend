@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  springboot-app:
+    image: my-spring-boot-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"  # Port exposé pour accéder à l'application
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/sene_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    depends_on:
+      - mysql-db
+
+  mysql-db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: sene_db
+    ports:
+      - "3306:3306"  # Port exposé pour accéder à MySQL

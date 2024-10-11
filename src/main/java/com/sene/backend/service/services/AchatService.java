@@ -12,7 +12,6 @@ import java.util.Optional;
 @Service
 public class AchatService implements CrudService<Achat, Long> {
 
-    @Autowired
     private AchatRepository achatRepository;
 
     @Override

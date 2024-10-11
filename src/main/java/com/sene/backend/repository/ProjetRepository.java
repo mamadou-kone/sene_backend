@@ -4,7 +4,10 @@ import com.sene.backend.entity.investissement.Projet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProjetRepository extends JpaRepository<Projet, Long> {
-    // JpaRepository fournit déjà les méthodes CRUD de base (save, findAll, findById, deleteById...)
+    // Méthode pour trouver des projets par ID d'agriculteur
+    List<Projet> findByAgriculteurId(Long agriculteurId);
 }

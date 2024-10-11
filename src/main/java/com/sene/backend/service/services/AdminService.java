@@ -19,6 +19,7 @@ public class AdminService {
 
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
     private ConfigurationCryptageMotDePasse passwordEncoder = new ConfigurationCryptageMotDePasse();
 
     // Méthode pour initialiser l'admin par défaut
