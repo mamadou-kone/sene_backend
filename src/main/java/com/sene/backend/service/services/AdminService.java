@@ -28,33 +28,7 @@ public class AdminService {
     }
 
     // Méthode pour initialiser l'admin par défaut
-    @PostConstruct
-    public void initAdmin() {
-        try {
-            if (adminRepository.count() == 0) {
-                Role roleAdmin = roleRepository.findByNom("Admin");
-                if (roleAdmin == null) {
-                    roleAdmin = new Role();
-                    roleAdmin.setNom("Admin");
-                    roleRepository.save(roleAdmin);
-                }
 
-                Admin admin = new Admin();
-                admin.setEmail("admin@gmail.com");
-                admin.setNom("Admin");
-                admin.setPrenom("Admin");
-                admin.setTel("inconnu");
-                admin.setAddress("inconnu");
-                admin.setImage(null);
-                admin.setPassword(passwordEncoder.passwordEncoder().encode("1234"));
-                admin.setRole(roleAdmin);
-                adminRepository.save(admin);
-            }
-        } catch (Exception e) {
-            System.err.println("Erreur lors de l'initialisation de l'admin : " + e.getMessage());
-            e.printStackTrace(); // Pour voir la stack trace complète
-        }
-    }
 
 
     // Ajouter un nouvel Admin
