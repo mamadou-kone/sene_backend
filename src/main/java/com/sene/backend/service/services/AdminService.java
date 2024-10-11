@@ -14,13 +14,18 @@ import java.util.Optional;
 @Service
 public class AdminService {
 
-    @Autowired
-    private AdminRepository adminRepository;
+    private final AdminRepository adminRepository;
+    private final RoleRepository roleRepository;
+    private final ConfigurationCryptageMotDePasse passwordEncoder;
 
     @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private ConfigurationCryptageMotDePasse passwordEncoder = new ConfigurationCryptageMotDePasse();
+    public AdminService(AdminRepository adminRepository,
+                        RoleRepository roleRepository,
+                        ConfigurationCryptageMotDePasse passwordEncoder) {
+        this.adminRepository = adminRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     // Méthode pour initialiser l'admin par défaut
     @PostConstruct
@@ -43,6 +48,7 @@ public class AdminService {
             admin.setPrenom("Admin");
             admin.setTel("iconnu");
             admin.setAddress("iconnu");
+            admin.setImage(new byte[0]);
             admin.setPassword(passwordEncoder.passwordEncoder().encode("1234")); // Assurez-vous de hasher ce mot de passe
             admin.setRole(roleAdmin);
             adminRepository.save(admin); // Sauvegarder l'admin
