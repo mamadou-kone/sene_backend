@@ -16,10 +16,10 @@ public class Produit {
     private String description;
     private Double prix;
     private Integer quantite;
-    private Boolean statut =true;
+    private Boolean statut = true;
 
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
+    @Column(columnDefinition = "BYTEA")  // Utilisez BYTEA pour PostgreSQL
     private byte[] image;  // Champ pour stocker l'image sous forme de bytes
 
     @ManyToOne

@@ -24,11 +24,11 @@ public class Projet {
     private String description;
     private Double montantNecessaire;
     private Double montantCollecte;
-    private Boolean statut=true;
+    private Boolean statut = true;
 
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    private byte[] image;  // Nouveau champ pour stocker l'image sous forme de bytes
+    @Column(columnDefinition = "BYTEA")  // Utilisation de BYTEA pour PostgreSQL
+    private byte[] image;  // Champ pour stocker l'image sous forme de bytes
 
     @ManyToOne
     private Agriculteur agriculteur;

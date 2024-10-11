@@ -1,6 +1,5 @@
 package com.sene.backend.entity.personne;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +17,6 @@ import java.util.Collections;
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-
 public abstract class Utilisateur implements UserDetails {
 
     @Id
@@ -32,7 +30,7 @@ public abstract class Utilisateur implements UserDetails {
     private String prenom;
     private String address;
     private String tel;
-    private LocalDate dateInscription=LocalDate.now();
+    private LocalDate dateInscription = LocalDate.now();
 
     @Column(nullable = false)
     private Boolean statutCompte = true;
@@ -41,14 +39,14 @@ public abstract class Utilisateur implements UserDetails {
     private String password;  // Assurez-vous de hasher le mot de passe avant de le sauvegarder
 
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
+    @Column(columnDefinition = "BYTEA")  // Changement ici pour PostgreSQL
     private byte[] image;
 
     // Gestion des rôles avec une relation ManyToOne
     @ManyToOne
     private Role role;
 
-    // Implementations de UserDetails pour Spring Security
+    // Implémentations de UserDetails pour Spring Security
     @Override
     public String getUsername() {
         return email;
@@ -56,7 +54,6 @@ public abstract class Utilisateur implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Assurez-vous que le nom du rôle correspond au format attendu par Spring Security (ex: "ROLE_ADMIN")
         return role != null ? Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.getNom())) : Collections.emptyList();
     }
 
