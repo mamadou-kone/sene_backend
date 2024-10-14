@@ -40,4 +40,8 @@ public class Projet {
     @JsonIgnore
     @OneToMany(mappedBy = "projet", cascade = CascadeType.ALL)
     private Set<PaiementInvestissement> paiementInvestissement;
+
+    public Projet(Long id) {
+        this.id = id;
+    }
 }
