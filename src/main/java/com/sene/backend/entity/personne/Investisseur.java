@@ -8,6 +8,14 @@ import lombok.Data;
 @Data
 public class Investisseur extends Utilisateur {
 
+    public Investisseur() {
+        // Constructeur sans argument nécessaire pour la désérialisation
+    }
+
+    public Investisseur(Long id) {
+        this.setId(id);  // Assurez-vous que 'id' est une propriété de la classe 'Utilisateur'
+    }
+
 }
 
 
