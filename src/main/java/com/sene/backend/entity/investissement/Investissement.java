@@ -14,7 +14,7 @@ public class Investissement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double montant;
-    private LocalDate dateInvestissement;
+    private LocalDate dateInvestissement=LocalDate.now();
 
     @ManyToOne
     private Investisseur investisseur;

@@ -28,16 +28,13 @@ public class InvestissementController {
 
     @PostMapping
     public ResponseEntity<Investissement> ajouterInvestissement(@RequestBody Investissement investissement) {
-        Long id = currentUserService.getCurrentUtilisateurId();
-        Optional<Investisseur> investisseur = investisseurService.trouverParId(id);
 
-        if (investisseur.isPresent()) {
-            investissement.setInvestisseur(investisseur.get());
+
+
             Investissement nouvelInvestissement = investissementService.ajout(investissement);
             return ResponseEntity.ok(nouvelInvestissement);
-        }
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
     }
 
     @GetMapping
