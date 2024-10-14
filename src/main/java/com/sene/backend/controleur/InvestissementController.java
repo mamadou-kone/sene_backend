@@ -14,27 +14,30 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/investissement")  // Utilisation de "investissement" dans le chemin d'API
+@RequestMapping("/api/investissement")
 public class InvestissementController {
 
     @Autowired
     private InvestissementService investissementService;
+
     @Autowired
     private CurrentUserService currentUserService;
+
     @Autowired
-    private InvestisseurService InvestisseurService;
+    private InvestisseurService investisseurService;
 
     @PostMapping
     public ResponseEntity<Investissement> ajouterInvestissement(@RequestBody Investissement investissement) {
         Long id = currentUserService.getCurrentUtilisateurId();
-        Optional<Investisseur> investisseur = InvestisseurService.trouverParId(id);
-        investissement.setInvestisseur(investisseur.get());
+        Optional<Investisseur> investisseur = investisseurService.trouverParId(id);
+
         if (investisseur.isPresent()) {
+            investissement.setInvestisseur(investisseur.get());
             Investissement nouvelInvestissement = investissementService.ajout(investissement);
             return ResponseEntity.ok(nouvelInvestissement);
         }
-        return (ResponseEntity<Investissement>) ResponseEntity.status(HttpStatus.CREATED);
 
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @GetMapping

@@ -1,9 +1,12 @@
 package com.sene.backend.controleur;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sene.backend.entity.investissement.Projet;
+import com.sene.backend.entity.personne.Agriculteur;
 import com.sene.backend.entity.produit.Produit;
 import com.sene.backend.security.configurationSecurity.CurrentUserService;
 import com.sene.backend.security.dto.statuts.StatutProduitDTO;
+import com.sene.backend.security.dto.statuts.StatutProjetDTO;
 import com.sene.backend.service.services.AgriculteurService;
 import com.sene.backend.service.services.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,10 +84,19 @@ public class ProduitController {
         ObjectMapper objectMapper = new ObjectMapper();
         Produit produit = objectMapper.readValue(produitJson, Produit.class);
 
+        // Récupérer l'ID de l'utilisateur (agriculteur) connecté
+        Long utilisateurId = currentUserService.getCurrentUtilisateurId();
+
+        // Récupérer l'agriculteur à partir de l'ID
+        Optional<Agriculteur> agriculteur = agriculteurService.trouverParId(utilisateurId);
+
+        // Vérifier si l'agriculteur est présent
+        if (agriculteur.isPresent()) {
+            produit.setAgriculteur(agriculteur.get());
 
             if (image != null && !image.isEmpty()) {
                 produit.setImage(image.getBytes());
-
+            }
 
             // Mettre à jour le produit
             Produit produitMisAJour = produitService.miseAJour(produit, id);

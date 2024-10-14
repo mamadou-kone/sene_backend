@@ -3,7 +3,7 @@ package com.sene.backend.service.services;
 import com.sene.backend.entity.investissement.Investissement;
 import com.sene.backend.entity.investissement.Projet;
 import com.sene.backend.repository.InvestissementRepository;
-import com.sene.backend.repository.ProjetRepository; // Assurez-vous d'importer le ProjetRepository
+import com.sene.backend.repository.ProjetRepository;
 import com.sene.backend.service.CrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +14,19 @@ import java.util.Optional;
 @Service
 public class InvestissementService implements CrudService<Investissement, Long> {
 
-    private InvestissementRepository investissementRepository;
+    private final InvestissementRepository investissementRepository;
+    private final ProjetRepository projetRepository;
 
-    private ProjetRepository projetRepository; // Déclaration du ProjetRepository
+    @Autowired
+    public InvestissementService(InvestissementRepository investissementRepository, ProjetRepository projetRepository) {
+        this.investissementRepository = investissementRepository;
+        this.projetRepository = projetRepository;
+    }
 
     @Override
     public Investissement ajout(Investissement entity) {
-        Long projetId = entity.getProjet().getId(); // Récupérer l'ID du projet
-        Projet projet = projetRepository.findById(projetId) // Récupérer le projet depuis la base de données
+        Long projetId = entity.getProjet().getId();
+        Projet projet = projetRepository.findById(projetId)
                 .orElseThrow(() -> new IllegalArgumentException("Le projet associé à l'investissement n'existe pas."));
 
         Double montantInvestissement = entity.getMontant();
@@ -31,7 +36,7 @@ public class InvestissementService implements CrudService<Investissement, Long> 
 
         Double montantCollecteActuel = projet.getMontantCollecte();
         if (montantCollecteActuel == null) {
-            montantCollecteActuel = 0.0; // Valeur par défaut
+            montantCollecteActuel = 0.0;
         }
 
         Double montantNecessaire = projet.getMontantNecessaire();
@@ -39,12 +44,11 @@ public class InvestissementService implements CrudService<Investissement, Long> 
             throw new IllegalArgumentException("Le montant nécessaire du projet ne peut pas être null.");
         }
 
-        // Vérification de la validité de l'investissement
         if (montantCollecteActuel + montantInvestissement <= montantNecessaire) {
             projet.setMontantCollecte(montantCollecteActuel + montantInvestissement);
-            projetRepository.save(projet); // Sauvegarder les modifications du projet
+            projetRepository.save(projet);
 
-            return investissementRepository.save(entity); // Sauvegarder l'investissement
+            return investissementRepository.save(entity);
         } else {
             throw new IllegalArgumentException("Le montant de l'investissement dépasse le montant nécessaire du projet.");
         }
