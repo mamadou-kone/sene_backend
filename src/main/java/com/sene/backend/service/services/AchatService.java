@@ -12,6 +12,7 @@ import java.util.Optional;
 @Service
 public class AchatService implements CrudService<Achat, Long> {
 
+    @Autowired // Ajoutez cette annotation pour injecter le repository
     private AchatRepository achatRepository;
 
     @Override
