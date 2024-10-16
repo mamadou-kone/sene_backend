@@ -1,8 +1,10 @@
 package com.sene.backend.service.services;
 
+import com.sene.backend.entity.achat.Panier; // Ajoutez cet import
 import com.sene.backend.entity.personne.Client;
 import com.sene.backend.entity.personne.Role;
 import com.sene.backend.repository.ClientRepository;
+import com.sene.backend.repository.PanierRepository; // Ajoutez cet import
 import com.sene.backend.repository.RoleRepository;
 import com.sene.backend.security.configurationSecurity.ConfigurationCryptageMotDePasse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class ClientService {
     @Autowired
     private ConfigurationCryptageMotDePasse configurationCryptageMotDePasse;
 
+    @Autowired
+    private PanierRepository panierRepository; // Ajoutez ceci
+
     // Ajouter un nouveau Client
     public Client ajout(Client client) {
         // Récupérer le rôle "Client"
@@ -38,6 +43,15 @@ public class ClientService {
         // Assigner le rôle au client
         client.setRole(roleClient);
         client.setPassword(configurationCryptageMotDePasse.passwordEncoder().encode(client.getPassword()));
+
+        // Créer un panier pour le client
+        Panier panier = new Panier();
+        panier.setClient(client); // Associer le panier au client
+        client.setPanier(panier); // Associer le panier au client
+
+        // Enregistrer le panier dans la base de données
+        panierRepository.save(panier);
+
         return clientRepository.save(client);
     }
 
