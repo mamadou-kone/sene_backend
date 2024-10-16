@@ -1,6 +1,7 @@
 package com.sene.backend.controleur;
 
 import com.sene.backend.entity.achat.Panier;
+import com.sene.backend.entity.achat.PanierProduit; // Ajoutez ceci
 import com.sene.backend.service.services.PanierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/panier")
@@ -48,5 +50,15 @@ public class PanierController {
     public ResponseEntity<Void> supprimerPanier(@PathVariable Long id) {
         panierService.supprimer(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Endpoint pour obtenir les produits du panier par ID
+    @GetMapping("/{id}/produits")
+    public ResponseEntity<Set<PanierProduit>> obtenirProduitsDuPanier(@PathVariable Long id) {
+        Set<PanierProduit> produits = panierService.getProduitsDuPanier(id);
+        if (produits.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(produits);
     }
 }
