@@ -22,7 +22,7 @@ public class Panier {
     @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PanierProduit> panierProduits;
 
-    @OneToOne // Chaque panier appartient à un seul client
-    @JoinColumn(name = "client_id", unique = true, nullable = false) // Unique pour assurer un seul panier par client
+    @ManyToOne
+    @JoinColumn(unique = true)
     private Client client;
 }

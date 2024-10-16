@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Client extends Utilisateur {
 
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Panier panier; // Un seul panier pour chaque client
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    private Set<Panier> panier; // Un client peut avoir plusieurs paniers si nécessaire
 }
