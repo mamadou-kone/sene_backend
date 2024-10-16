@@ -36,7 +36,6 @@ public class AchatService implements CrudService<Achat, Long> {
         if (existingAchat.isPresent()) {
             Achat updatedAchat = existingAchat.get();
             updatedAchat.setDateAchat(entity.getDateAchat());
-            updatedAchat.setClient(entity.getClient());
             updatedAchat.setPaiementAchat(entity.getPaiementAchat());
             return achatRepository.save(updatedAchat);
         } else {

@@ -1,6 +1,5 @@
 package com.sene.backend.entity.achat;
 
-import com.sene.backend.entity.achat.Panier;
 import com.sene.backend.entity.produit.Produit;
 import jakarta.persistence.*;
 import lombok.Data;
