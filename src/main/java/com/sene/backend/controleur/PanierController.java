@@ -56,9 +56,12 @@ public class PanierController {
     @GetMapping("/{id}/produits")
     public ResponseEntity<Set<PanierProduit>> obtenirProduitsDuPanier(@PathVariable Long id) {
         Set<PanierProduit> produits = panierService.getProduitsDuPanier(id);
+
         if (produits.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(produits); // Retourne un ensemble vide avec 200 OK
         }
-        return ResponseEntity.ok(produits);
+
+        return ResponseEntity.ok(produits); // Retourne les produits avec 200 OK
     }
+
 }
