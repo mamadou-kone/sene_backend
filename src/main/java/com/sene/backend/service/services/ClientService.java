@@ -26,7 +26,7 @@ public class ClientService {
     private ConfigurationCryptageMotDePasse configurationCryptageMotDePasse;
 
     @Autowired
-    private PanierRepository panierRepository; // Ajoutez ceci
+    private PanierRepository panierRepository; // Ajoutez ceci pour le panier
 
     // Ajouter un nouveau Client
     public Client ajout(Client client) {
@@ -44,15 +44,17 @@ public class ClientService {
         client.setRole(roleClient);
         client.setPassword(configurationCryptageMotDePasse.passwordEncoder().encode(client.getPassword()));
 
+        // Enregistrer le client dans la base de données
+        Client savedClient = clientRepository.save(client);
+
         // Créer un panier pour le client
         Panier panier = new Panier();
-        panier.setClient(client); // Associer le panier au client
-        client.setPanier(panier); // Associer le panier au client
+        panier.setClient(savedClient); // Associer le panier au client
 
         // Enregistrer le panier dans la base de données
         panierRepository.save(panier);
 
-        return clientRepository.save(client);
+        return savedClient;
     }
 
     // Lister tous les Clients
