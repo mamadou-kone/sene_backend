@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -22,16 +21,16 @@ public class Achat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate dateAchat= LocalDate.now();
-    private Double montant;
+    private LocalDate dateAchat = LocalDate.now(); // Date de l'achat
+    private Double montant; // Montant total de l'achat
 
     @ManyToOne
-    private Client client;
+    private Panier panier; // Référence au panier associé
+
     @ManyToOne
-    private Produit produit;
+    private Produit produit; // Référence au produit acheté
 
     @JsonIgnore
-    @OneToMany(mappedBy = "achat",cascade = CascadeType.ALL)
-    private Set<PaiementAchat> paiementAchat;
-
+    @OneToMany(mappedBy = "achat", cascade = CascadeType.ALL)
+    private Set<PaiementAchat> paiementAchat; // Paiements associés à cet achat
 }
