@@ -21,4 +21,9 @@ public class PanierProduit {
     private Produit produit;
 
     private Integer quantite;
+
+    // Méthode pour mettre à jour la quantité
+    public void updateQuantite(int nouvelleQuantite) {
+        this.quantite = nouvelleQuantite;
+    }
 }

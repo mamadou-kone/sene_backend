@@ -54,4 +54,19 @@ public class PanierProduitController {
         panierProduitService.supprimer(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Mettre à jour la quantité d'un produit dans le panier
+    @PatchMapping("/update-quantite")
+    public ResponseEntity<String> updateQuantitePanierProduit(
+            @RequestParam Long panierProduitId,
+            @RequestParam int nouvelleQuantite) {
+
+        try {
+            panierProduitService.updateQuantite(panierProduitId, nouvelleQuantite);
+            return ResponseEntity.ok("Quantité mise à jour avec succès");
+        } catch (Exception e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        }
+    }
+
 }

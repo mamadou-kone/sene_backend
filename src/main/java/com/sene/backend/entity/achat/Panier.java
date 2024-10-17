@@ -20,6 +20,7 @@ public class Panier {
     private Long id;
 
     @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // Pour éviter les boucles d'objets lors de la sérialisation
     private Set<PanierProduit> panierProduits;
 
     @ManyToOne

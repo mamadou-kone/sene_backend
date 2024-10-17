@@ -48,4 +48,18 @@ public class PanierProduitService implements CrudService<PanierProduit, Long> {
     public void supprimer(Long id) {
         panierProduitRepository.deleteById(id);
     }
+
+
+
+    public PanierProduit updateQuantite(Long panierProduitId, int nouvelleQuantite) {
+        Optional<PanierProduit> panierProduitOptional = panierProduitRepository.findById(panierProduitId);
+
+        if (!panierProduitOptional.isPresent()) {
+            throw new RuntimeException("Produit dans le panier non trouvé");
+        }
+
+        PanierProduit panierProduit = panierProduitOptional.get();
+        panierProduit.updateQuantite(nouvelleQuantite);
+        return panierProduitRepository.save(panierProduit);
+    }
 }
