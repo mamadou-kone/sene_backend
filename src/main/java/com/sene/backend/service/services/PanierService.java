@@ -56,4 +56,14 @@ public class PanierService implements CrudService<Panier, Long> {
     public Set<PanierProduit> getProduitsDuPanier(Long panierId) {
         return panierProduitRepository.findByPanierId(panierId);
     }
+
+    // Méthode pour obtenir les produits d'un panier à partir de l'ID du client
+    public Set<PanierProduit> getProduitsParClientId(Long clientId) {
+        Optional<Panier> panier = panierRepository.findByClientId(clientId);
+        if (panier.isPresent()) {
+            return panierProduitRepository.findByPanierId(panier.get().getId());
+        }
+        return Collections.emptySet(); // Retourne un ensemble vide si aucun panier n'est trouvé pour ce client
+    }
+
 }

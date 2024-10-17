@@ -64,4 +64,14 @@ public class PanierController {
         return ResponseEntity.ok(produits); // Retourne les produits avec 200 OK
     }
 
+    // Endpoint pour obtenir les produits d'un panier par l'ID du client
+    @GetMapping("/client/{clientId}/produits")
+    public ResponseEntity<Set<PanierProduit>> obtenirProduitsParClientId(@PathVariable Long clientId) {
+        Set<PanierProduit> produits = panierService.getProduitsParClientId(clientId);
+        if (produits.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(produits);
+    }
+
 }
