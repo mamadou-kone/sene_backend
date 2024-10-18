@@ -1,7 +1,9 @@
 package com.sene.backend.controleur;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sene.backend.entity.investissement.Investissement;
 import com.sene.backend.entity.personne.Client;
+import com.sene.backend.entity.personne.Investisseur;
 import com.sene.backend.service.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,12 +61,27 @@ public class ClientController {
 
     // Mise à jour d'un Client
     @PutMapping("/{id}")
-    public ResponseEntity<Client> miseAJour(@PathVariable Long id, @RequestBody Client client) {
-        Client updatedClient = clientService.miseAJour(client, id);
-        if (updatedClient != null) {
-            return ResponseEntity.ok(updatedClient);
+    public ResponseEntity<Client> miseAJour(@PathVariable Long id, @RequestParam("client") String clientJson,
+                                                  @RequestParam(value = "image", required = false) MultipartFile imageFile) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Client client = objectMapper.readValue(clientJson, Client.class);
+
+            // Gérer l'image si elle est fournie
+            if (imageFile != null && !imageFile.isEmpty()) {
+                client.setImage(imageFile.getBytes());
+            }
+
+            Client updatedClient = clientService.miseAJour(client, id);
+            if (updatedClient != null) {
+                return ResponseEntity.ok(updatedClient);
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     // Suppression d'un Client par ID

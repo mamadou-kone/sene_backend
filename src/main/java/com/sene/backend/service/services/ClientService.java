@@ -1,7 +1,9 @@
 package com.sene.backend.service.services;
 
 import com.sene.backend.entity.achat.Panier; // Ajoutez cet import
+import com.sene.backend.entity.investissement.Investissement;
 import com.sene.backend.entity.personne.Client;
+import com.sene.backend.entity.personne.Investisseur;
 import com.sene.backend.entity.personne.Role;
 import com.sene.backend.repository.ClientRepository;
 import com.sene.backend.repository.PanierRepository; // Ajoutez cet import
@@ -67,7 +69,6 @@ public class ClientService {
         return clientRepository.findById(id);
     }
 
-    // Mise à jour d'un Client
     public Client miseAJour(Client entity, Long id) {
         Optional<Client> existingClient = clientRepository.findById(id);
         if (existingClient.isPresent()) {
@@ -84,6 +85,7 @@ public class ClientService {
             return null; // Si le client n'existe pas
         }
     }
+    // Mise à jour d'un Client
 
     // Supprimer un Client par ID
     public void supprimer(Long id) {
