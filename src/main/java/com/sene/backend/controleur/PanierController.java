@@ -74,4 +74,16 @@ public class PanierController {
         return ResponseEntity.ok(produits);
     }
 
-}
+        // Obtenir l'ID du panier par ID du client
+        @GetMapping("/client/{clientId}")
+        public ResponseEntity<Long> getPanierIdByClientId(@PathVariable Long clientId) {
+            Long panierId = panierService.findPanierIdByClientId(clientId);
+            if (panierId != null) {
+                return ResponseEntity.ok(panierId);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+    }
+
+

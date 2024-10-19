@@ -66,4 +66,11 @@ public class PanierService implements CrudService<Panier, Long> {
         return Collections.emptySet(); // Retourne un ensemble vide si aucun panier n'est trouvé pour ce client
     }
 
+
+    public Long findPanierIdByClientId(Long clientId) {
+        // Supposez que vous ayez une méthode dans votre repository pour trouver le panier par client
+        Optional<Panier> panier = panierRepository.findByClientId(clientId);
+        return panier != null ? panier.get().getId() : null;
+    }
+
 }
