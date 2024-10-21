@@ -74,36 +74,28 @@ public class ProduitController {
     }
 
     // Mettre à jour un produit existant
-    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
-    public ResponseEntity<Produit> mettreAJourProduit(
-            @PathVariable Long id,
-            @RequestPart("produit") String produitJson,
-            @RequestPart(value = "image", required = false) MultipartFile image) throws IOException {
+    @PutMapping("/{id}")
+    public ResponseEntity<Produit> miseAJour(@PathVariable Long id,
+                                             @RequestParam("produit") String produitJson,
+                                             @RequestParam(value = "image", required = false) MultipartFile imageFile) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Produit produit = objectMapper.readValue(produitJson, Produit.class);
 
-        // Convertir le JSON en objet Produit
-        ObjectMapper objectMapper = new ObjectMapper();
-        Produit produit = objectMapper.readValue(produitJson, Produit.class);
-
-        // Récupérer l'ID de l'utilisateur (agriculteur) connecté
-        Long utilisateurId = currentUserService.getCurrentUtilisateurId();
-
-        // Récupérer l'agriculteur à partir de l'ID
-        Optional<Agriculteur> agriculteur = agriculteurService.trouverParId(utilisateurId);
-
-        // Vérifier si l'agriculteur est présent
-        if (agriculteur.isPresent()) {
-            produit.setAgriculteur(agriculteur.get());
-
-            if (image != null && !image.isEmpty()) {
-                produit.setImage(image.getBytes());
+            // Gérer l'image si elle est fournie
+            if (imageFile != null && !imageFile.isEmpty()) {
+                produit.setImage(imageFile.getBytes());
             }
 
-            // Mettre à jour le produit
-            Produit produitMisAJour = produitService.miseAJour(produit, id);
-
-            return produitMisAJour != null ? ResponseEntity.ok(produitMisAJour) : ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.badRequest().build(); // Gérer le cas où l'agriculteur n'est pas trouvé
+            Produit updatedProduit = produitService.miseAJour(produit, id);
+            if (updatedProduit != null) {
+                return ResponseEntity.ok(updatedProduit);
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

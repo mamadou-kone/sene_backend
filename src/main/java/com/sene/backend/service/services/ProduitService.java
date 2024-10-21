@@ -33,15 +33,20 @@ public class ProduitService implements CrudService<Produit, Long>, ActiveDesacti
 
     @Override
     public Produit miseAJour(Produit entity, Long id) {
-        return produitRepository.findById(id)
-                .map(existingProduit -> {
-                    existingProduit.setNom(entity.getNom());
-                    existingProduit.setDescription(entity.getDescription());
-                    existingProduit.setPrix(entity.getPrix());
-                    existingProduit.setQuantite(entity.getQuantite());
-                    return produitRepository.save(existingProduit);
-                })
-                .orElse(null);
+        Optional<Produit> existingProduit = produitRepository.findById(id);
+        if (existingProduit.isPresent()) {
+            Produit updatedProduit = existingProduit.get();
+            updatedProduit.setNom(entity.getNom());
+            updatedProduit.setDescription(entity.getDescription());
+            updatedProduit.setPrix(entity.getPrix());
+            updatedProduit.setQuantite(entity.getQuantite());
+            updatedProduit.setStatut(entity.getStatut()); // Mise à jour du statut
+            updatedProduit.setImage(entity.getImage()); // Gérer l'image
+            updatedProduit.setAgriculteur(entity.getAgriculteur()); // Mise à jour de l'agriculteur
+            return produitRepository.save(updatedProduit);
+        } else {
+            return null; // Si le produit n'existe pas
+        }
     }
 
     @Override
