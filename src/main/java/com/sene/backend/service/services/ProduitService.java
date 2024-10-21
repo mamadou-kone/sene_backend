@@ -40,9 +40,7 @@ public class ProduitService implements CrudService<Produit, Long>, ActiveDesacti
             updatedProduit.setDescription(entity.getDescription());
             updatedProduit.setPrix(entity.getPrix());
             updatedProduit.setQuantite(entity.getQuantite());
-            updatedProduit.setStatut(entity.getStatut()); // Mise à jour du statut
-            updatedProduit.setImage(entity.getImage()); // Gérer l'image
-            updatedProduit.setAgriculteur(entity.getAgriculteur()); // Mise à jour de l'agriculteur
+            updatedProduit.setImage(entity.getImage());
             return produitRepository.save(updatedProduit);
         } else {
             return null; // Si le produit n'existe pas
