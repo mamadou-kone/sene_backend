@@ -61,4 +61,9 @@ public class ProduitService implements CrudService<Produit, Long>, ActiveDesacti
         }
     }
 
+
+    public List<Produit> trouverParAgriculteur(Long agriculteurId) {
+        return produitRepository.findByAgriculteurId(agriculteurId);
+    }
+
 }

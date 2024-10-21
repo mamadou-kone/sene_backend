@@ -135,4 +135,12 @@ public class ProduitController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+
+    // Récupérer les produits par ID d'agriculteur
+    @GetMapping("/agriculteur/{id}")
+    public ResponseEntity<List<Produit>> listerProduitsParAgriculteur(@PathVariable Long id) {
+        List<Produit> produits = produitService.trouverParAgriculteur(id);
+        return ResponseEntity.ok(produits);
+    }
+
 }
