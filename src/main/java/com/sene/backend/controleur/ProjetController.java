@@ -130,6 +130,12 @@ public class ProjetController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    @GetMapping("/agriculteur/{id}")
+    public ResponseEntity<List<Projet>> getProjetsByAgriculteurId(@PathVariable Long id) {
+        List<Projet> projets = projetService.getProjetsByAgriculteurId(id);
+        return ResponseEntity.ok(projets);
+    }
+
 
 
 }

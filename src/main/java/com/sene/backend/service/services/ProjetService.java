@@ -64,4 +64,8 @@ public class ProjetService implements CrudService<Projet, Long>, ActiveDesactive
             return null; // Si le projet n'existe pas
         }
     }
+
+    public List<Projet> getProjetsByAgriculteurId(Long agriculteurId) {
+        return projetRepository.findByAgriculteurId(agriculteurId);
+    }
 }
