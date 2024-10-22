@@ -85,4 +85,9 @@ public class InvestissementService implements CrudService<Investissement, Long> 
         }
         investissementRepository.deleteById(id);
     }
+
+    public List<Investissement> findByInvestisseurId(Long investisseurId) {
+        return investissementRepository.findByInvestisseur_Id(investisseurId);
+    }
+
 }

@@ -15,4 +15,7 @@ public interface InvestissementRepository extends JpaRepository<Investissement, 
     @Query("SELECT i FROM Investissement i WHERE i.dateInvestissement BETWEEN :startDate AND :endDate")
     List<Investissement> findByDateInvestissementBetween(@Param("startDate") LocalDate startDate,
                                                          @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT i FROM Investissement i WHERE i.investisseur.id = :investisseurId")
+    List<Investissement> findByInvestisseur_Id(Long investisseurId);
 }

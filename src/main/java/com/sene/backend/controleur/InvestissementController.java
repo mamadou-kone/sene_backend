@@ -64,4 +64,10 @@ public class InvestissementController {
         investissementService.supprimer(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/investisseur/{investisseurId}")
+    public ResponseEntity<List<Investissement>> getInvestissementsByInvestisseur(@PathVariable Long investisseurId) {
+        List<Investissement> investissements = investissementService.findByInvestisseurId(investisseurId);
+        return ResponseEntity.ok(investissements);
+    }
 }
