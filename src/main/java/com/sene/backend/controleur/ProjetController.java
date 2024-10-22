@@ -80,15 +80,12 @@ public class ProjetController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Projet projet = objectMapper.readValue(projetJson, Projet.class);
-            Long utilisateurId = currentUserService.getCurrentUtilisateurId();
-            Optional<Agriculteur> agriculteur = agriculteurService.trouverParId(utilisateurId);
 
-            if (agriculteur.isPresent()) {
-                projet.setAgriculteur(agriculteur.get());
+
 
                 if (image != null && !image.isEmpty()) {
                     projet.setImage(image.getBytes());
-                }
+
 
                 Projet projetMisAJour = projetService.miseAJour(projet, id);
                 return projetMisAJour != null ? ResponseEntity.ok(projetMisAJour) : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
