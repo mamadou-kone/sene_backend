@@ -25,10 +25,6 @@ public class InvestissementService implements CrudService<Investissement, Long> 
 
     @Override
     public Investissement ajout(Investissement entity) {
-        if (entity.getProjet() == null) {
-            throw new IllegalArgumentException("Le projet associé à l'investissement ne peut pas être null.");
-        }
-
         Long projetId = entity.getProjet().getId();
         Projet projet = projetRepository.findById(projetId)
                 .orElseThrow(() -> new IllegalArgumentException("Le projet associé à l'investissement n'existe pas."));
@@ -57,7 +53,6 @@ public class InvestissementService implements CrudService<Investissement, Long> 
             throw new IllegalArgumentException("Le montant de l'investissement dépasse le montant nécessaire du projet.");
         }
     }
-
 
     @Override
     public List<Investissement> liste() {
