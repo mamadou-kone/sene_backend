@@ -27,9 +27,6 @@ public class Achat {
     @ManyToOne
     private Panier panier; // Référence au panier associé
 
-    @ManyToOne
-    private Produit produit; // Référence au produit acheté
-
     @JsonIgnore
     @OneToMany(mappedBy = "achat", cascade = CascadeType.ALL)
     private Set<PaiementAchat> paiementAchat; // Paiements associés à cet achat

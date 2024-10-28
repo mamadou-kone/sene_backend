@@ -11,6 +11,7 @@ public class PanierProduit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    boolean acheterBoolean = false;
 
     @ManyToOne
     @JoinColumn(name = "panier_id")

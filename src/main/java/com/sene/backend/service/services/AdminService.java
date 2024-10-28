@@ -45,7 +45,6 @@ public class AdminService {
                 admin.setPrenom("Admin");
                 admin.setTel("inconnu");
                 admin.setAddress("inconnu");
-                admin.setImage(null);
                 admin.setPassword(passwordEncoder.passwordEncoder().encode("1234"));
                 admin.setRole(roleAdmin);
                 adminRepository.save(admin);
