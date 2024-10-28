@@ -62,4 +62,7 @@ public class PanierProduitService implements CrudService<PanierProduit, Long> {
         panierProduit.updateQuantite(nouvelleQuantite);
         return panierProduitRepository.save(panierProduit);
     }
+
+
+
 }

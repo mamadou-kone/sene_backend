@@ -1,7 +1,9 @@
 package com.sene.backend.controleur;
 
 import com.sene.backend.entity.achat.PanierProduit;
+import com.sene.backend.repository.PanierProduitRepository;
 import com.sene.backend.service.services.PanierProduitService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,14 @@ public class PanierProduitController {
 
     @Autowired
     private PanierProduitService panierProduitService;
+    @Autowired
+    private PanierProduitRepository panierProduitRepository;
+
+    @PostConstruct
+    public void initializeAcheterBoolean() {
+        // Mettre à jour acheterBoolean pour toutes les lignes existantes
+        panierProduitRepository.setAcheterBooleanToFalseForExistingRecords();
+    }
 
     // Ajouter un produit dans le panier
     @PostMapping
