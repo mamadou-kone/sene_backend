@@ -13,8 +13,5 @@ public interface PanierProduitRepository extends JpaRepository<PanierProduit,Lon
     Set<PanierProduit> findByPanierId(Long panierId);
     Optional<PanierProduit> findById(Long id);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE PanierProduit p SET p.acheterBoolean = false WHERE p.acheterBoolean IS NULL")
-    void setAcheterBooleanToFalseForExistingRecords();
+
 }

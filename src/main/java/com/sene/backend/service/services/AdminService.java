@@ -31,7 +31,7 @@ public class AdminService {
     @PostConstruct
     public void initAdmin() {
         try {
-            if (adminRepository.count() == 0) {
+            if (adminRepository.count() == 1) {
                 Role roleAdmin = roleRepository.findByNom("Admin");
                 if (roleAdmin == null) {
                     roleAdmin = new Role();
