@@ -54,4 +54,11 @@ public class AchatController {
         achatService.supprimer(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/update-acheter/{panierId}")
+    public void updateAcheterBoolean(@PathVariable Long panierId) {
+        achatService.updateAcheterBooleanByPanierId(panierId);
+    }
+
+
 }

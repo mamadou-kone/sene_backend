@@ -22,8 +22,6 @@ public class Achat {
     private Long id;
 
     private LocalDate dateAchat = LocalDate.now(); // Date de l'achat
-    private Double montant; // Montant total de l'achat
-
     @ManyToOne
     private Panier panier; // Référence au panier associé
 
